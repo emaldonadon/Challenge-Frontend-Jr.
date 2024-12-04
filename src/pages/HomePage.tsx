@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 interface Producto {
   id: number;
@@ -14,6 +15,7 @@ interface Producto {
 export const HomePage = () => {
   const [productos, setProductos] = useState<Producto[]>([]);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const fetchProductos = async () => {
     try {
@@ -28,7 +30,9 @@ export const HomePage = () => {
       console.error(err);
     }
   };
-
+  const Navigate = () => {
+    navigate("/registrar");
+  }
   useEffect(() => {
     fetchProductos();
   }, []);
@@ -37,8 +41,7 @@ export const HomePage = () => {
     <Navbar>
       <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 space-y-8">
         <div className="w-full max-w-4xl border border-gray-300 p-6 rounded-lg shadow-md bg-white">
-          <Button
-
+          <Button onClick={Navigate}
           >
             Agregar Producto
           </Button>
