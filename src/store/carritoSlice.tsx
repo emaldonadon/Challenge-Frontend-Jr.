@@ -14,9 +14,8 @@ interface CarritoStore {
 }
 
 const initialState: CarritoStore = {
-    productos: [],
-}
-
+    productos: JSON.parse(localStorage.getItem("carrito") || "[]"), 
+  };
 const carritoSlice = createSlice({
     name: "carrito",
     initialState,
@@ -30,6 +29,7 @@ const carritoSlice = createSlice({
             } else {
                 state.productos.push(action.payload)
             }
+            localStorage.setItem("carrito", JSON.stringify(state.productos));
         },
     },
 });

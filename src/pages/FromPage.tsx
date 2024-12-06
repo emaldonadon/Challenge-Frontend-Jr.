@@ -5,6 +5,7 @@ import { Input } from "@/components/Input";
 import { useAppDispatch } from "@/hooks/redux";
 import { agregarProducto } from "@/store/carritoSlice";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 interface Producto {
   id: number;
@@ -19,6 +20,7 @@ export const FromPage = () => {
   const [cantidad, setCantidad] = useState("");
   const [productoSeleccionado, setProductoSeleccionado] = useState<string>("");
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const fetchProductos = async () => {
     const response = await fetch("https://fakestoreapi.com/products");
@@ -51,6 +53,8 @@ export const FromPage = () => {
       Swal.fire({
         icon: "success",
         title: "Producto agregado con éxito",
+      }).then(() => {
+        navigate("/");
       });
     }
   };
