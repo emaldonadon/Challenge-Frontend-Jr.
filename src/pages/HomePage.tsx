@@ -3,13 +3,16 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator"
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store/Store";
+import { eliminarProducto } from "@/store/carritoSlice";
+import { Trash2 } from "lucide-react";
 
 
 export const HomePage = () => {
   const productos = useSelector((state: RootState) => state.carrito.productos);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
 
   const Navigate = () => {
@@ -20,14 +23,19 @@ export const HomePage = () => {
     day: "numeric",
     month: "long",
     year: "numeric",
-    hour:"2-digit",
-    minute:"2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
   });
 
   const total = productos.reduce(
     (sum, product) => sum + product.price * product.cantidad,
     0
   );
+
+  const EliminarProducto = (id: number) => {
+    dispatch(eliminarProducto(id));
+  };
+
 
   return (
     <Navbar>
@@ -47,6 +55,7 @@ export const HomePage = () => {
                   <TableHead className="w-[100px]">Categoría</TableHead>
                   <TableHead className="w-[100px]">Precio</TableHead>
                   <TableHead className="w-[100px]">Foto</TableHead>
+                  <TableHead className="w-[100px]">Opcion</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -70,13 +79,21 @@ export const HomePage = () => {
                           className="w-[50px] h-[50px] object-cover rounded"
                         />
                       </TableCell>
+                      <TableCell>
+                        <Button
+                          variant="destructive"
+                          onClick={() => EliminarProducto(product.id)}
+                        >
+                          <Trash2 />
+                        </Button>
+                      </TableCell>
                     </TableRow>
                   ))
                 )}
-                </TableBody>
+              </TableBody>
             </Table>
           </div>
-          <Separator className="my-4"/>
+          <Separator className="my-4" />
           <div className="flex justify-center text-lg font-semibold">
             Total del carrito a pagar: ${total.toFixed(2)}
           </div>
