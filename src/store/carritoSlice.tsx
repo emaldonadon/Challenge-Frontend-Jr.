@@ -14,8 +14,8 @@ interface CarritoStore {
 }
 
 const initialState: CarritoStore = {
-    productos: JSON.parse(localStorage.getItem("carrito") || "[]"), 
-  };
+    productos: JSON.parse(localStorage.getItem("carrito") || "[]"),
+};
 const carritoSlice = createSlice({
     name: "carrito",
     initialState,
@@ -31,8 +31,14 @@ const carritoSlice = createSlice({
             }
             localStorage.setItem("carrito", JSON.stringify(state.productos));
         },
+        eliminarProducto: (state, action: PayloadAction<number>) => {
+            state.productos = state.productos.filter(
+                (producto) => producto.id !== action.payload
+            );
+            localStorage.setItem("carrito", JSON.stringify(state.productos));
+        }
     },
 });
 
-export const { agregarProducto } = carritoSlice.actions;
+export const { agregarProducto, eliminarProducto } = carritoSlice.actions;
 export default carritoSlice.reducer;
